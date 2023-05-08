@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VerificationController extends Controller
 {
@@ -22,5 +23,18 @@ class VerificationController extends Controller
     public function notice()
     {
 //        return view();
+    }
+
+    public function checkAuthUser()
+    {
+        if(Auth::check()){
+            return [
+                'email' => Auth::user()->email,
+                'phone_number' => Auth::user()->phone_number,
+                'name' => Auth::user()->name,
+            ];
+        }else{
+            return false;
+        }
     }
 }

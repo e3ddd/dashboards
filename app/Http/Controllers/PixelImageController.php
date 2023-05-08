@@ -21,7 +21,6 @@ class PixelImageController extends Controller
          *
          */
         $pixelImageService = app(PixelImageService::class);
-        $statisticService = app(StatisticService::class);
 
         $ip = $request->ip();
 
@@ -29,19 +28,38 @@ class PixelImageController extends Controller
             $ip = fake()->ipv4;
         }
 
-
         if(Auth::check()){
-            return $pixelImageService->checkPixel($userPixel, $ip, Auth::user()->id);
+            return $pixelImageService->checkPixel($userPixel, $ip);
         }
     }
 
-    public function getUserPixel()
+    /**
+     * Create Pixel ID
+     */
+    public function createPixel()
     {
-        /** @var PixelImageService $pixelImageService */
-        $pixelImageService = app(PixelImageService::class);
-
         if(Auth::check()){
-            return $pixelImageService->getUserPixel(Auth::user()->id);
+            /** @var PixelImageService $pixelImageService */
+            $pixelImageService = app(PixelImageService::class);
+            $pixelImageService->createPixel(Auth::user()->id);
+        }else{
+            throw new \RuntimeException('You must be logged in');
+        }
+    }
+
+
+    /**
+     * Get user pixel IDS
+     * @return mixed
+     */
+    public function getUserPixels()
+    {
+        if(Auth::check()){
+            /** @var PixelImageService $pixelImageService */
+            $pixelImageService = app(PixelImageService::class);
+            return $pixelImageService->getUserPixels(Auth::user()->id);
+        }else{
+            throw new \RuntimeException('You must be logged in');
         }
     }
 

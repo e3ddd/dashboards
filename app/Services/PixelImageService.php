@@ -18,13 +18,27 @@ class PixelImageService
      * @param string|null $userPixel
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|null
      */
-    public function checkPixel($userPixel, $ip, $userId)
+    public function checkPixel($userPixel, $ip)
     {
-        return $this->pixelImageRepository->checkPixel($userPixel, $ip, $userId);
+        return $this->pixelImageRepository->checkPixel($userPixel, $ip);
     }
 
-    public function getUserPixel($userId)
+    /**
+     * Create pixel ID
+     * @param integer|null $userId
+     */
+    public function createPixel($userId)
     {
-        return $this->pixelImageRepository->getUserPixel($userId);
+        $this->pixelImageRepository->createPixel($userId);
+    }
+
+    /**
+     * Get user pixel IDS
+     * @param integer|null $userId
+     * @return mixed
+     */
+    public function getUserPixels($userId)
+    {
+        return $this->pixelImageRepository->getUserPixels($userId);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AboutUser;
 use App\Models\User;
 use App\Repositories\PixelImageRepository;
+use App\Repositories\StatisticRepository;
 use GeoIp2\Database\Reader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,14 +17,7 @@ class Test extends Controller
 {
     public function index(Request $request)
     {
-        $cities = DB::table('about_users')
-            ->select('city', DB::raw('count(*) as total'))
-            ->groupBy('city')
-            ->get();
-
-
-
-
-        dump($cities);
+        $test = new StatisticRepository();
+        dd($test->getReferralStatistic('city', ));
     }
 }

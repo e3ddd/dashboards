@@ -1,47 +1,54 @@
 <template>
-    <pixel-gif/>
-    <div class="container body">
+    <div class="container">
         <div class="row">
-            <top-table
-                :column="'city'"
-            />
-            <top-table
-                :column="'platform'"
-            />
-            <top-table
-                :column="'browser'"
-            />
-            <top-table
-                :column="'device'"
-            />
-            <top-table
-                :column="'language'"
-            />
+            <div class="col mt-4">
+                <h1>
+                    Hello,
+                    <span v-if="this.auth">{{this.email}}</span>
+                    <span v-else>User</span>
+                    !
+                </h1>
+            </div>
+        </div>
+        <div class="row text1">
+          <text1/>
         </div>
     </div>
-
 </template>
 
 <script>
-import TopTable from "./components/HomePage/TopTable.vue";
 import PixelGif from "./components/UI/PixelGif.vue";
-
+import Text1 from "./components/TestTexts/Text1.vue";
 export default {
     components: {
         PixelGif,
-        TopTable
+        Text1
+    },
+    data: () => ({
+        auth: false,
+        email: '',
+    }),
+
+    mounted() {
+        this.checkAuthUser();
     },
 
-
     methods: {
-
+        async checkAuthUser() {
+            axios.get('/check_auth')
+                .then((response) => {
+                    if(response.data !== ''){
+                        this.auth = true
+                        this.email = response.data.email
+                    }
+                })
+        }
     }
 }
 </script>
 
 <style scoped>
-
-h1  {
-    margin-top: 100%;
+.text1 {
+    margin-top: 80px;
 }
 </style>

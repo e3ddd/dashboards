@@ -24,7 +24,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'phone_number',
-        'user_pixel'
     ];
 
     /**
@@ -37,10 +36,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
-    protected static function booted(): void
+
+    public function pixels()
     {
-        static::creating(function (User $user) {
-            $user->user_pixel = Str::uuid();
-        });
+        return $this->hasMany(PixelGif::class, 'user_id');
     }
 }

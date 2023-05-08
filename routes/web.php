@@ -26,6 +26,8 @@ Route::controller(IndexPagesViewController::class)->group(function() {
     Route::get('/', 'homePageShow')->name('home');
     Route::get('/registration', 'registrationShow');
     Route::get('/login', 'loginShow');
+    Route::get('/create_pixel', 'createPixel');
+    Route::get('/dashboard', 'allStatisticDashboardShow');
 });
 
 Route::controller(RegistrationController::class)->group(function() {
@@ -34,12 +36,13 @@ Route::controller(RegistrationController::class)->group(function() {
 
 Route::controller(LoginController::class)->group(function() {
    Route::get('/login/log', 'auth');
+   Route::get('/logout', 'logout');
 });
 
 Route::controller(PixelImageController::class)->group(function() {
     Route::get('/pixel/{userPixel}/pixel.gif', 'pixelImage');
-    ROute::get('/get_user_pixel', 'getUserPixel');
-
+    Route::get('/get_user_pixel', 'getUserPixels');
+    Route::get('/create_pixel/create', 'createPixel');
 });
 
 Route::controller(StatisticController::class)->group(function() {
@@ -47,6 +50,22 @@ Route::controller(StatisticController::class)->group(function() {
 });
 
 Route::controller(VerificationController::class)->group(function (){
-    Route::get('/email/verify', [VerificationController::class, 'notice'])->middleware('auth')->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
+    Route::get('/email/verify', 'notice')->middleware('auth')->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}',  'verify')->middleware(['auth', 'signed'])->name('verification.verify');
+    Route::get('/check_auth', 'checkAuthUser');
+});
+
+
+
+Route::get('/test_page/test1', function (){
+    return view('Test.test1');
+});
+Route::get('/test_page/test2', function (){
+    return view('Test.test2');
+});
+Route::get('/test_page/test3', function (){
+    return view('Test.test3');
+});
+Route::get('/test_page/test4', function (){
+    return view('Test.test4');
 });

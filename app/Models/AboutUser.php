@@ -12,7 +12,7 @@ class AboutUser extends Model
     protected $table = 'about_users';
 
     protected $fillable = [
-        'user_id',
+        'referral',
         'user_ip',
         'city',
         'platform',
@@ -21,8 +21,4 @@ class AboutUser extends Model
         'language',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 }

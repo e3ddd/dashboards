@@ -1,25 +1,21 @@
 <template>
-        <canvas :id="column" style="width: 200px; height: 200px; margin: 30px"></canvas>
+    <canvas :id="column" style="width: 50px; height: 50px; margin: 30px"></canvas>
 </template>
 
 <script>
 import {Chart} from "chart.js/auto";
 
 export default {
+    name: "Bar",
+
     data: () => ({
-        chartType: "doughnut",
+        chartType: "bar",
         chartOptions: {
-            maintainAspectRatio: false,
-            legend: {
-                labels: {
-                    boxWidth: 10,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 },
-                position: "top",
-            },
-            animation: {
-                duration: 2000,
-                easing: "easeInOutQuart",
-            },
         }
     }),
 
@@ -27,12 +23,11 @@ export default {
         chartData() {
             return {
                 labels: this.labels,
-                    datasets: [{
-                        label: "Visits",
-                        data: this.points,
-                        backgroundColor: this.bgColors,
-                        hoverOffset: 7
-                    }]
+                datasets: [{
+                    label: "Visits",
+                    data: this.points,
+                    backgroundColor: this.bgColors,
+                }]
             }
         }
     },

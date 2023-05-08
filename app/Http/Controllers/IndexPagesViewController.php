@@ -32,4 +32,22 @@ class IndexPagesViewController extends Controller
     {
         return view('Login.layout');
     }
+
+    /**
+     * Show all statistic dashboard
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
+    public function allStatisticDashboardShow()
+    {
+        return view('Dashboards.allStatisticDashboardLayout');
+    }
+
+    /**
+     * Show create pixel page
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
+    public function createPixel()
+    {
+        return view('CreatePixel.layout');
+    }
 }
