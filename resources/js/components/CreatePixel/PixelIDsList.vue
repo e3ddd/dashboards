@@ -10,12 +10,15 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="row item" v-for="(gif, key) in pixelGifs">
+                <div class="row item" v-for="(gif, key) in pixelGifs.data">
                     <div class="col mt-2">
                         {{key + 1}}
                     </div>
                     <div class="col mt-2 pixel_link">
-                        <a :href="'/pixel/' + gif.pixel +'/pixel.gif'">http://127.0.0.1:8000/pixel/{{gif.pixel}}/pixel.gif</a>
+                        <a :href="'/pixel/' + gif.pixel +'/pixel.gif'">{{gif.url}}</a>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <button @click="this.destroyPixel(gif.id)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -28,11 +31,40 @@ export default {
     name: "PixelIDsList",
     props: {
         pixelGifs: Array
+    },
+
+    methods: {
+        async destroyPixel(pixelId) {
+            axios.post('/pixel/delete', {
+                pixelId: pixelId
+            })
+                .then(() => {
+                    location.reload()
+                })
+                .catch(err => console.log(err))
+        }
     }
 }
 </script>
 
 <style scoped>
+button {
+    height: 30px !important;
+    border-radius: 10px;
+    margin-top: 15px;
+    padding: 0px 30px 0px 30px;
+    background: none;
+    border: 1px solid red;
+    color: red;
+    cursor: pointer;
+}
+
+button:hover {
+    transition: 0.5s;
+    background: red;
+    color: #fff;
+}
+
 .label {
     border-bottom: 1px solid black;
 }

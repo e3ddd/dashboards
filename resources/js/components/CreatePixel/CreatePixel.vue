@@ -56,7 +56,6 @@ export default {
         async createPixel() {
             axios.get('/create_pixel/create')
                 .then((response) => {
-                    alert('Pixel created')
                     location.reload()
                 })
                 .catch((err) => {

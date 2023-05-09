@@ -17,30 +17,29 @@
 
     <div class="table" v-if="loaded && type === 'table'">
         <div class="row">
-            <div class="col">
+            <div class="col-sm-3 pl-2">
                 <small>Pos.</small>
             </div>
-            <div class="col">
+            <div class="col-md-3 pl-1">
                 <small>Color</small>
             </div>
-            <div class="col">
+            <div class="col-lg-3 pl-0">
                 <small>Name</small>
             </div>
-            <div class="col">
+            <div class="col-sm-3 pl-2">
                 <small>Visit points</small>
             </div>
         </div>
         <div class="row" v-for="(label, key) in this.labels">
-            <div class="col" v-if="label !== 'others'">
+            <div class="col-sm-3" v-if="label !== 'others'">
                 {{key + 1}}.
             </div>
-            <div class="col" v-else></div>
-            <div class="col-1 tableBar" :style="'background-color:' + this.bgColors[key] +';'">
-            </div>
-            <div class="col-4 ml-3 d-flex justify-content-center">
+            <div class="col-sm-3" v-else></div>
+            <div class="col-md-1 tableBar" :style="'background-color:' + this.bgColors[key] +';'"></div>
+            <div class="col-lg-5 d-flex justify-content-center">
                 {{label}}
             </div>
-            <div class="col-3">
+            <div class="col-sm-3">
                 {{this.points[key]}} visits
             </div>
         </div>
@@ -70,8 +69,17 @@ export default {
     }),
 
     props: {
+        pixel: String,
         column: String,
         type: String,
+    },
+
+    watch: {
+      pixel(newValue, oldValue){
+          this.labels = []
+          this.points = []
+          this.getStatistic()
+      }
     },
 
     mounted(){
@@ -81,8 +89,9 @@ export default {
     methods: {
         async getStatistic() {
             this.loaded = false;
-            axios.get('/get_column_statistic', {
+            axios.get('/get_referral_column_statistic', {
                 params: {
+                    pixel: this.pixel,
                     column: this.column
                 }
             })
@@ -104,7 +113,7 @@ export default {
 
 <style scoped>
 .table {
-    width: 400px;
+    width: 500px;
     height: 200px;
     margin-left: 100px;
     padding: 20px;
@@ -114,7 +123,7 @@ export default {
 
 .tableBar {
     margin-top: 7px;
-    width: 10px;
+    width: 5px;
     height: 10px;
 }
 </style>

@@ -63,4 +63,15 @@ class PixelImageController extends Controller
         }
     }
 
+    public function deletePixel(Request $request)
+    {
+        if(Auth::check()){
+            /** @var PixelImageService $pixelImageService */
+            $pixelImageService = app(PixelImageService::class);
+            $pixelImageService->deletePixel($request->pixelId);
+        }else{
+            throw new \RuntimeException('You must be logged in');
+        }
+    }
+
 }

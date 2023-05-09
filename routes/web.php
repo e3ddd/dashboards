@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\API\ListController;
 use App\Http\Controllers\IndexPagesViewController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PixelImageController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\Test;
+use App\Http\Controllers\TokensController;
 use App\Http\Controllers\VerificationController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,8 +29,9 @@ Route::controller(IndexPagesViewController::class)->group(function() {
     Route::get('/', 'homePageShow')->name('home');
     Route::get('/registration', 'registrationShow');
     Route::get('/login', 'loginShow');
-    Route::get('/create_pixel', 'createPixel');
+    Route::get('/create_pixel', 'createPixelShow');
     Route::get('/dashboard', 'allStatisticDashboardShow');
+    Route::get('/create_token', 'crateTokenShow');
 });
 
 Route::controller(RegistrationController::class)->group(function() {
@@ -40,13 +44,16 @@ Route::controller(LoginController::class)->group(function() {
 });
 
 Route::controller(PixelImageController::class)->group(function() {
-    Route::get('/pixel/{userPixel}/pixel.gif', 'pixelImage');
+    Route::get('/pixel/{userPixel}/pixel.gif', 'pixelImage')->name('pixel');
     Route::get('/get_user_pixel', 'getUserPixels');
     Route::get('/create_pixel/create', 'createPixel');
+    Route::post('/pixel/delete', 'deletePixel');
 });
 
 Route::controller(StatisticController::class)->group(function() {
     Route::get('/get_column_statistic', 'getColumnStatistic');
+    Route::get('/get_referral_column_statistic', 'getReferralColumnStatistic');
+
 });
 
 Route::controller(VerificationController::class)->group(function (){
@@ -55,17 +62,26 @@ Route::controller(VerificationController::class)->group(function (){
     Route::get('/check_auth', 'checkAuthUser');
 });
 
+Route::controller(TokensController::class)->group(function() {
+   Route::get('/get_user_tokens', 'getUserTokens');
+   Route::post('/create_token/create', 'createToken');
+   Route::post('/destroy_token', 'destroyToken');
+});
 
 
-Route::get('/test_page/test1', function (){
-    return view('Test.test1');
-});
-Route::get('/test_page/test2', function (){
-    return view('Test.test2');
-});
-Route::get('/test_page/test3', function (){
-    return view('Test.test3');
-});
-Route::get('/test_page/test4', function (){
-    return view('Test.test4');
-});
+Route::get('/api/v1', [\App\Http\Controllers\API\ListSwaggerController::class, 'swagger']);
+
+
+
+//Route::get('/test_page/test1', function (){
+//    return view('Test.test1');
+//});
+//Route::get('/test_page/test2', function (){
+//    return view('Test.test2');
+//});
+//Route::get('/test_page/test3', function (){
+//    return view('Test.test3');
+//});
+//Route::get('/test_page/test4', function (){
+//    return view('Test.test4');
+//});

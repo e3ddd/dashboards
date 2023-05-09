@@ -46,8 +46,17 @@ class IndexPagesViewController extends Controller
      * Show create pixel page
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
-    public function createPixel()
+    public function createPixelShow()
     {
         return view('CreatePixel.layout');
+    }
+
+    /**
+     * Show create token page
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
+    public function crateTokenShow()
+    {
+        return view('CreateToken.layout');
     }
 }

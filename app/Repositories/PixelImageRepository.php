@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\GetPixelResource;
 use App\Models\AboutUser;
-use App\Models\PageViewStatistic;
 use App\Models\PixelGif;
 use App\Models\User;
 use GeoIp2\Database\Reader;
@@ -53,10 +53,14 @@ class PixelImageRepository
 
         $pixelUuid = Str::uuid();
 
-        PixelGif::create([
-            'user_id' => $userId,
-            'pixel' => $pixelUuid
-        ]);
+        try {
+            PixelGif::create([
+                'user_id' => $userId,
+                'pixel' => $pixelUuid
+            ]);
+        }catch (\RuntimeException $e){
+            throw new $e;
+        }
     }
 
     /**
@@ -70,7 +74,21 @@ class PixelImageRepository
             throw new \RuntimeException('User id required');
         }
 
-        return PixelGif::where('user_id', $userId)->get('pixel');
+        return GetPixelResource::collection(PixelGif::where('user_id', $userId)->get());
+    }
+
+    /**
+     * Delete pixel by id
+     * @param integer|null $pixelId
+     * @return void
+     */
+    public function deletePixel($pixelId)
+    {
+        if($pixelId === null){
+            throw new \RuntimeException('Pixel id required');
+        }
+
+        PixelGif::destroy($pixelId);
     }
 
     /**
@@ -90,47 +108,54 @@ class PixelImageRepository
 
         $referral = $_SERVER['REQUEST_URI'];
 
-//        $cities = ['Frankfurt', 'Seattle', 'Toronto', 'Paris', 'Washington DC', 'Kiyv', 'Zaporizhe', 'Berlin', 'Deli'];
-//        $platforms = ['Ubuntu', 'Windows', 'OS X', 'Fedora', 'Linux', 'Solaris', 'Haiku'];
-//        $devices = ['Phone', 'Tablet', 'PC', 'Nexus'];
-//        $browsers = ['Chrome', 'IE', 'Opera', 'Mozila', 'Onion', 'Chromium', 'Opera GX'];
-//        $languages = ['eu' ,'ua', 'ru', 'ch', 'du', 'pr', 'po', 'gre'];
+        preg_match('*(\w+-){4}\w+*', $referral, $match);
 
-//        $platform = $platforms[rand(0,6)];
-        $platform = $agent->platform();
-//        $browser = $browsers[rand(0,6)];
-        $browser = $agent->browser();
-//        $device = $devices[rand(0,3)];
-        $device = $agent->device();
-//        $language = $languages[rand(0,7)];
-        $language = $agent->languages()[0];
+        $gif_id = PixelGif::where('pixel', $match[0])->first()->id;
+        for ($i=0;$i<300;$i++){
 
-        try {
-            $record = $cityDbReader->city($ip);
-            $city = $record->city->name;
-        }catch (AddressNotFoundException $e){
-            $city = null;
-            $platform = null;
-            $browser = null;
-            $device = null;
-            $language = null;
+            $cities = ['Frankfurt', 'Seattle', 'Toronto', 'Paris', 'Washington DC', 'Kiyv', 'Zaporizhe', 'Berlin', 'Deli'];
+            $platforms = ['Ubuntu', 'Windows', 'OS X', 'Fedora', 'Linux', 'Solaris', 'Haiku'];
+            $devices = ['Phone', 'Tablet', 'PC', 'Nexus'];
+            $browsers = ['Chrome', 'IE', 'Opera', 'Mozila', 'Onion', 'Chromium', 'Opera GX'];
+            $languages = ['eu' ,'ua', 'ru', 'ch', 'du', 'pr', 'po', 'gre'];
+
+            $platform = $platforms[rand(0,6)];
+//        $platform = $agent->platform();
+            $browser = $browsers[rand(0,6)];
+//        $browser = $agent->browser();
+            $device = $devices[rand(0,3)];
+//        $device = $agent->device();
+            $language = $languages[rand(0,7)];
+//        $language = $agent->languages()[0];
+
+            try {
+                $record = $cityDbReader->city($ip);
+                $city = $record->city->name;
+            }catch (AddressNotFoundException $e){
+                $city = null;
+                $platform = null;
+                $browser = null;
+                $device = null;
+                $language = null;
+            }
+
+
+//        For tests
+            if($city === null) {
+                $city = $cities[rand(0,8)];
+            }
+//
+
+            AboutUser::create([
+                'referral' => $referral,
+                'user_ip' => $ip,
+                'city' => $city,
+                'platform' => $platform,
+                'browser' => $browser,
+                'device' => $device,
+                'language' => $language,
+                'pixel_id' => $gif_id,
+            ]);
         }
-
-
-        //For tests
-//        if($city === null) {
-//            $city = $cities[rand(0,8)];
-//        }
-        //
-
-        AboutUser::create([
-            'referral' => $referral,
-            'user_ip' => $ip,
-            'city' => $city,
-            'platform' => $platform,
-            'browser' => $browser,
-            'device' => $device,
-            'language' => $language,
-        ]);
     }
 }

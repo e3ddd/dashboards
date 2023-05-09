@@ -45,6 +45,11 @@
                     <a href="/dashboard">Dashboard</a>
                 </div>
             </div>
+            <div class="row link">
+                <div class="col p-2">
+                    <a href="/create_token">Tokens</a>
+                </div>
+            </div>
         </div>
     </div>
 

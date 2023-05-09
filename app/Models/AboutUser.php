@@ -19,6 +19,7 @@ class AboutUser extends Model
         'device',
         'browser',
         'language',
+        'pixel_id'
     ];
 
 }

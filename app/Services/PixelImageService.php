@@ -41,4 +41,14 @@ class PixelImageService
     {
         return $this->pixelImageRepository->getUserPixels($userId);
     }
+
+    /**
+     * Delete pixel by id
+     * @param integer|null $pixelId
+     * @return void
+     */
+    public function deletePixel($pixelId)
+    {
+        $this->pixelImageRepository->deletePixel($pixelId);
+    }
 }
