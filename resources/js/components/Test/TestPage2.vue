@@ -1,5 +1,6 @@
 <template>
-    <img src="http://127.0.0.1:8000/pixel/b6c2f2e3-1eea-45b6-86e4-685107281e2c/pixel.gif">
+    <img src="
+http://127.0.0.1:8000/pixel/06f5bf20-14b0-4c4a-84ef-8d951d0b2ac3/pixel.gif">
 </template>
 
 <script>

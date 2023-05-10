@@ -47,12 +47,14 @@ Route::controller(PixelImageController::class)->group(function() {
     Route::get('/pixel/{userPixel}/pixel.gif', 'pixelImage')->name('pixel');
     Route::get('/get_user_pixel', 'getUserPixels');
     Route::get('/create_pixel/create', 'createPixel');
-    Route::post('/pixel/delete', 'deletePixel');
+    Route::delete('/pixel/delete/{pixelId}', 'deletePixel');
 });
 
 Route::controller(StatisticController::class)->group(function() {
     Route::get('/get_column_statistic', 'getColumnStatistic');
-    Route::get('/get_referral_column_statistic', 'getReferralColumnStatistic');
+    Route::get('/get_pixel_column_statistic', 'getPixelColumnStatistic');
+    Route::get('/get_referral_column_statistic', 'getPixelColumnStatistic');
+    Route::get('/get_pixel_referrals', 'getPixelReferrals');
 
 });
 
@@ -79,9 +81,9 @@ Route::get('/api/v1', [\App\Http\Controllers\API\ListSwaggerController::class, '
 //Route::get('/test_page/test2', function (){
 //    return view('Test.test2');
 //});
-//Route::get('/test_page/test3', function (){
-//    return view('Test.test3');
-//});
-//Route::get('/test_page/test4', function (){
-//    return view('Test.test4');
-//});
+Route::get('/test_page/test3', function (){
+    return view('Test.test3');
+});
+Route::get('/test_page/test4', function (){
+    return view('Test.test4');
+});

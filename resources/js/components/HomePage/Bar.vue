@@ -36,7 +36,8 @@ export default {
         labels: Array,
         bgColors: Array,
         points: Array,
-        column: String
+        column: String,
+        referral:String,
     },
 
     mounted() {

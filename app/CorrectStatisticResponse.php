@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\AboutUser;
+
 class CorrectStatisticResponse
 {
     private \Illuminate\Support\Collection $collection;

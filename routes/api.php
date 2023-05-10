@@ -16,11 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::middleware('auth:sanctum')
     ->group(function (\Illuminate\Routing\Router $router) {
+        $router->get('/docs/pixel', [ListSwaggerController::class, 'swagger']);
         $router->get('/pixels', [ListController::class, 'getPixel']);
         $router->get('/pixel/create', [ListController::class, 'createPixel']);
-        $router->delete('/pixel/delete', [ListController::class, 'deletePixel']);
+        $router->delete('/pixel/delete/{pixelId}', [ListController::class, 'deletePixel']);
         $router->put('/pixel/update', [ListController::class, 'updatePixel']);
     });
 

@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('about_users', function (Blueprint $table) {
-            $table->integer('pixel_id');
+            $table->foreignId('pixel_id')
+                ->constrained('pixel_gifs')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

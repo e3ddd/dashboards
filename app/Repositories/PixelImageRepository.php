@@ -99,6 +99,7 @@ class PixelImageRepository
      */
     public function recordUserAgent($ip)
     {
+
         if($ip === null){
             throw new \RuntimeException('IP required');
         }
@@ -106,16 +107,28 @@ class PixelImageRepository
         $agent = new Agent();
         $cityDbReader = new Reader('/home/developer/workspace/GeoIP2/GeoLite2-City_20230502/GeoLite2-City.mmdb');
 
-        $referral = $_SERVER['REQUEST_URI'];
+        $referral = $_SERVER['HTTP_REFERER'];
 
-        preg_match('*(\w+-){4}\w+*', $referral, $match);
+        if($referral === null){
 
-        $gif_id = PixelGif::where('pixel', $match[0])->first()->id;
+        }
+
+        $gif_id = collect([]);
+
+        if(preg_match('*(\w+-){4}\w+*', $_SERVER['REQUEST_URI'], $match)){
+            $gif_id = PixelGif::where('pixel', $match[0])->first()->id;
+        }
+
+        if($gif_id === null){
+            throw new \RuntimeException('Pixel not found');
+        }
+
+
         for ($i=0;$i<300;$i++){
 
             $cities = ['Frankfurt', 'Seattle', 'Toronto', 'Paris', 'Washington DC', 'Kiyv', 'Zaporizhe', 'Berlin', 'Deli'];
             $platforms = ['Ubuntu', 'Windows', 'OS X', 'Fedora', 'Linux', 'Solaris', 'Haiku'];
-            $devices = ['Phone', 'Tablet', 'PC', 'Nexus'];
+            $devices = ['Phone', 'Tablet', 'PC', 'Nexus', 'Laptop'];
             $browsers = ['Chrome', 'IE', 'Opera', 'Mozila', 'Onion', 'Chromium', 'Opera GX'];
             $languages = ['eu' ,'ua', 'ru', 'ch', 'du', 'pr', 'po', 'gre'];
 
@@ -123,27 +136,27 @@ class PixelImageRepository
 //        $platform = $agent->platform();
             $browser = $browsers[rand(0,6)];
 //        $browser = $agent->browser();
-            $device = $devices[rand(0,3)];
+            $device = $devices[rand(0,4)];
 //        $device = $agent->device();
             $language = $languages[rand(0,7)];
 //        $language = $agent->languages()[0];
 
-            try {
-                $record = $cityDbReader->city($ip);
-                $city = $record->city->name;
-            }catch (AddressNotFoundException $e){
-                $city = null;
-                $platform = null;
-                $browser = null;
-                $device = null;
-                $language = null;
-            }
+//            try {
+//                $record = $cityDbReader->city($ip);
+//                $city = $record->city->name;
+//            }catch (AddressNotFoundException $e){
+//                $city = null;
+//                $platform = null;
+//                $browser = null;
+//                $device = null;
+//                $language = null;
+//            }
 
 
 //        For tests
-            if($city === null) {
+//            if($city === null) {
                 $city = $cities[rand(0,8)];
-            }
+//            }
 //
 
             AboutUser::create([

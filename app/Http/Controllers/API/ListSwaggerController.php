@@ -32,4 +32,8 @@ class ListSwaggerController extends Controller
      *     description="API Endpoints of Projects"
      * )
      */
+    public function swagger()
+    {
+
+    }
 }

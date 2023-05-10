@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" v-if="pixel !== '' && referral === ''">
         <div class="col-4">
             <top-table
                 :pixel="pixel"
@@ -22,6 +22,32 @@
             />
         </div>
     </div>
+    <div class="row" v-if="referral !== ''">
+        <div class="col-4">
+            <top-table
+                :pixel="pixel"
+                :referral="referral"
+                :column="name"
+                :type="'bar'"
+            />
+        </div>
+        <div class="col-5">
+            <top-table
+                :pixel="pixel"
+                :referral="referral"
+                :column="name"
+                :type="'donut'"
+            />
+        </div>
+        <div class="col-3 table">
+            <top-table
+                :pixel="pixel"
+                :referral="referral"
+                :column="name"
+                :type="'table'"
+            />
+        </div>
+    </div>
 </template>
 
 <script>
@@ -34,6 +60,7 @@ export default {
     props: {
         name: String,
         pixel: String,
+        referral: String,
     },
 
     name: "StatisticDashboardItem"

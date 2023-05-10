@@ -18,14 +18,6 @@ class Test extends Controller
 {
     public function index(Request $request)
     {
-        $referral = PixelGif::where('pixel', 'aee5ab0e-e61c-4262-a08d-21b5300bd0c4')->first()->id;
-
-        $statistic = DB::table('about_users')
-            ->select('browser', DB::raw('count(*) as total'))
-            ->where('referral', $referral)
-            ->groupBy('browser')
-            ->get();
-
-        dump($statistic);
+        dd(DB::table('about_users')::distinct()->get());
     }
 }

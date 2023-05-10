@@ -20,9 +20,17 @@ class StatisticController extends Controller
         return $statisticService->getColumnStatistic($request->column);
     }
 
-    public function getReferralColumnStatistic(GetStatisticRequest $request)
+    public function getPixelColumnStatistic(GetStatisticRequest $request)
     {
+        /** @var StatisticService $statisticService */
         $statisticService = app(StatisticService::class);
-        return $statisticService->getReferralColumnStatistic($request->column, $request->pixel);
+        return $statisticService->getPixelColumnStatistic($request->column, $request->pixel);
+    }
+
+    public function getPixelReferrals(Request $request)
+    {
+        /** @var StatisticService $statisticService */
+        $statisticService = app(StatisticService::class);
+        return $statisticService->getPixelReferrals($request->pixel);
     }
 }

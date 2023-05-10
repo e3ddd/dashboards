@@ -35,8 +35,10 @@ export default {
 
     methods: {
         async destroyPixel(pixelId) {
-            axios.post('/pixel/delete', {
-                pixelId: pixelId
+            axios.delete('/pixel/delete/' + pixelId, {
+                params: {
+                    pixelId: pixelId
+                }
             })
                 .then(() => {
                     location.reload()

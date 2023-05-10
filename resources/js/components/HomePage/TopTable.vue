@@ -4,7 +4,7 @@
         :points="this.points"
         :labels="this.labels"
         :bg-colors="this.bgColors"
-        :column="this.column + 'donut'"
+        :column="column + 'donut' + referral"
     />
 
     <bar
@@ -12,7 +12,7 @@
         :points="this.points"
         :labels="this.labels"
         :bg-colors="this.bgColors"
-        :column="this.column + 'bar'"
+        :column="column + 'bar' + referral"
     />
 
     <div class="table" v-if="loaded && type === 'table'">
@@ -70,28 +70,57 @@ export default {
 
     props: {
         pixel: String,
+        referral: String,
         column: String,
         type: String,
     },
 
     watch: {
-      pixel(newValue, oldValue){
+        pixel(newValue, oldValue){
           this.labels = []
           this.points = []
-          this.getStatistic()
-      }
+          this.getPixelStatistic()
+        },
+
+        referral(newValue, oldValue){
+            this.labels = []
+            this.points = []
+            this.getReferralStatistic()
+        }
     },
 
     mounted(){
-        this.getStatistic()
+        this.getPixelStatistic()
     },
 
     methods: {
-        async getStatistic() {
+        async getPixelStatistic() {
+            this.loaded = false;
+            axios.get('/get_pixel_column_statistic', {
+                params: {
+                    pixel: this.pixel,
+                    column: this.column
+                }
+            })
+                .then(({data}) => data.map((item) => {
+                    this.labels.push(item.name ?? 'Undefined');
+                    if(item.name === 'others'){
+                        this.bgColors.push('rgb('+ 149 + ',' + 149 + ',' + 149 + ')');
+                    }
+                    this.points.push(item.total);
+                }))
+                .finally(() => {
+                    this.loaded = true;
+                })
+                .catch(err => console.log(err))
+        },
+
+        async getReferralStatistic() {
             this.loaded = false;
             axios.get('/get_referral_column_statistic', {
                 params: {
                     pixel: this.pixel,
+                    referral: this.referral,
                     column: this.column
                 }
             })

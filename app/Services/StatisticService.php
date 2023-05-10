@@ -27,8 +27,24 @@ class StatisticService
      * @param string|null $pixel
      * @return array
      */
-    public function getReferralColumnStatistic($column, $pixel)
+    public function getPixelColumnStatistic($column, $pixel)
     {
-        return $this->statisticRepository->getReferralColumnStatistic($pixel, $column);
+        return $this->statisticRepository->getPixelColumnStatistic($pixel, $column);
+    }
+
+    /**
+     * @param string|null $column
+     * @param string|null $pixel
+     * @param string|null $referral
+     * @return array
+     */
+    public function getReferralColumnStatistic($column, $pixel, $referral)
+    {
+        return $this->statisticRepository->getReferralColumnStatistic($column, $pixel, $referral);
+    }
+
+    public function getPixelReferrals($pixel)
+    {
+        return $this->statisticRepository->getPixelReferrals($pixel);
     }
 }
